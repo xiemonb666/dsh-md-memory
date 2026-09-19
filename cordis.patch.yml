@@ -1,0 +1,36 @@
+# dsh-md-memory bundle patch layer.
+#
+# One ROOT row: makes this package a root loader entry.
+#
+# WHY A ROOT ROW IS REQUIRED (2026-09-05, "Context tab never appears" debug):
+#   The host's ClientModuleRegistry (@deepseek-ai/dsh-client-modules) builds
+#   the browser boot manifest (window.__DSH_BOOT__.entries — the client
+#   modules the page preloads from /plugins/??<id>/client.js,…) from ROOT
+#   loader rows only: each row's package manifest is resolved, and a client
+#   entry is registered when the package declares a `dsh.client` half
+#   (platform "web"). A package imported only by per-session preset rows is
+#   invisible to that scan — so lib/client.js (which registers the 项目记忆 /
+#   上下文 conversation tabs) was never served to the browser, in any session
+#   or shell mode, no matter how many times the host was restarted.
+#   dsh-free-search works for exactly this reason: its patch inserts a root
+#   row (web-search-free → dsh-free-search). This package's patch was [] —
+#   the earlier attempt to swap the root compaction-basic row was rejected
+#   at boot by the name-mismatch guard (a patch `name:` can never change a
+#   target row's specifier), which is why this package used to run only
+#   through per-session preset rows.
+#
+# The row imports the package MAIN export (lib/root.js, exports["."]): an
+# inert module-face service that only runs the idempotent, failure-tolerant
+# preset provisioning (same function the engine calls per session). It
+# registers no services, listeners or compaction behavior in the root realm.
+#
+# The engine itself still mounts PER SESSION through the standard-mml /
+# minimal-mml preset rows, which now point at the `dsh-md-memory/engine`
+# subpath export (lib/index.js — the unchanged engine code). Subpath bare
+# specifiers are supported by the desktop host's profile package resolver
+# (packageNameFromSpecifier maps `dsh-md-memory/engine` → `dsh-md-memory`,
+# then Node's exports map resolves `./engine` → lib/index.js).
+- insert:
+    - id: md-memory-root
+      name: dsh-md-memory
+      config: {}
