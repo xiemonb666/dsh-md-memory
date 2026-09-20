@@ -82,9 +82,11 @@ test("mismatch error is actionable (points at the stock engine recovery)", () =>
 
 test("model capacity normalization accepts current and legacy backend shapes", () => {
 	if (unavailable) return;
-	const { normalizeModelInfo } = mod;
+	const { normalizeModelInfo, modelInfoFromBackendListing } = mod;
 	assert.deepEqual(normalizeModelInfo({ context: { contextWindow: 200016 }, defaultMaxTokens: 65536 }), { contextWindow: 200016, maxTokens: 65536 });
 	assert.deepEqual(normalizeModelInfo({ maxContextTokens: 131072, maxOutputTokens: 8192 }), { contextWindow: 131072, maxTokens: 8192 });
+	assert.deepEqual(normalizeModelInfo({ max_model_len: 262144, max_tokens: 65536 }), { contextWindow: 262144, maxTokens: 65536 });
+	assert.deepEqual(modelInfoFromBackendListing({ data: [{ id: "qwen38-agent", max_model_len: 262144, max_tokens: 65536 }] }, "qwen38-agent"), { contextWindow: 262144, maxTokens: 65536 });
 	assert.equal(normalizeModelInfo({ context: {} }), null);
 });
 

@@ -1,6 +1,6 @@
 # dsh-md-memory（Markdown Memory Ledger，MML）
 
-当前发行版：**0.1.15**。
+当前发行版：**0.1.16**。
 
 DeepSeek Harness（DSH）插件：以 **纯 Markdown 文件** 作为项目长期记忆台账，挂接在压缩（compaction）引擎上。
 
@@ -86,6 +86,7 @@ DeepSeek Harness（DSH）插件：以 **纯 Markdown 文件** 作为项目长期
 - 助手消息操作区新增 **"记忆"** 按钮，一键打开标签。
 - **上下文**标签新增“预算与压缩设置”卡片：显示当前 provider/model 与模型硬上限，按路由编辑有效上下文目标、最大输出、安全余量、压缩阈值、保留预算、压缩/溢出重试以及 `max-tokens` 自动续写。设置写入 DSH profile 的 `dsh-md-memory` 命名空间，带 revision 乐观锁；原生压缩字段保存后对新会话生效，预检和续写开关立即生效。
 - 模型硬上下文与路由最大输出由 DSH 后端 `resolveModelInfo` 动态读取：设置页刷新/保存时强制更新，正常请求按 15 秒短缓存刷新；后端暂时不可用时保留最近一次有效能力值并在界面标注旧值状态。
+- 对 OpenAI/vLLM 后端额外读取 `/models` 的 `max_model_len`、`context_length` 等实时字段；因此只修改后端容量而没有同步 `settings.yaml` 时，插件仍能获取新的硬上限。
 
 ### 请求预算保护
 
@@ -122,7 +123,7 @@ profile = `~/.dsh/profiles/<name>/`（本机为 `desktop`）：
    ```
 
    - 正式源：`npm install dsh-md-memory@latest`（npm/git/私有 registry 均可）；
-   - 本地交付：在本仓库 `npm pack` 生成当前版本 tarball 后 `npm install .\dsh-md-memory-0.1.15.tgz`。
+   - 本地交付：在本仓库 `npm pack` 生成当前版本 tarball 后 `npm install .\dsh-md-memory-0.1.16.tgz`。
    - npm 会自动把 `"dsh-md-memory": "<源>"` 写入 profile 的 `package.json` → `dependencies`。
 
 2. **注册 bundle**：profile `package.json` 的 `dsh.profile.bundles` **末尾**追加 `"dsh-md-memory"`（bundle 顺序即补丁叠加顺序，最后写入者胜）。
