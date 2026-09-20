@@ -1,6 +1,6 @@
 {
   "name": "dsh-md-memory",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "Markdown Memory Ledger for DeepSeek Harness: file-based project memory (.dsh-memory/*.md) with integrity-checked Guardian sync every N turns and before every compaction, memory_search/memory_read tools, and the 项目记忆/上下文 tabs in the Web UI. exports: . = root bundle entry (lib/root.js, inert; makes the dsh.client half visible to the host boot-manifest scan), ./engine = per-session compaction engine (lib/index.js), ./client = browser module (lib/client.js).",
   "keywords": [
     "dsh",

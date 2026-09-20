@@ -80,6 +80,14 @@ test("mismatch error is actionable (points at the stock engine recovery)", () =>
 	assert.match(error.message, /dsh-compaction-basic/);
 });
 
+test("model capacity normalization accepts current and legacy backend shapes", () => {
+	if (unavailable) return;
+	const { normalizeModelInfo } = mod;
+	assert.deepEqual(normalizeModelInfo({ context: { contextWindow: 200016 }, defaultMaxTokens: 65536 }), { contextWindow: 200016, maxTokens: 65536 });
+	assert.deepEqual(normalizeModelInfo({ maxContextTokens: 131072, maxOutputTokens: 8192 }), { contextWindow: 131072, maxTokens: 8192 });
+	assert.equal(normalizeModelInfo({ context: {} }), null);
+});
+
 test("constructor throws on a broken contract, BEFORE the stock engine constructor runs", () => {
 	if (unavailable) return;
 	const { MarkdownMemoryCompactionEngine } = mod;
