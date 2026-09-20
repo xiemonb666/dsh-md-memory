@@ -39,6 +39,12 @@ test("route budget defaults preserve adapter capabilities and continuation defau
 	assert.deepEqual(budget.continuation, DEFAULT_CONTINUATION);
 });
 
+test("unknown adapter output limit does not become a zero-token request", () => {
+	const budget = budgetForRoute("vllm", "qwen38-agent", { contextWindow: 262144, maxTokens: 0 }, { maxTokens: 65536 });
+	assert.equal(budget.maxOutputTokens, 65536);
+	assert.equal(safeOutputBudget({ targetContextTokens: budget.targetContextTokens, projectedInputTokens: 741, configuredMaxOutput: budget.maxOutputTokens, safetyMarginTokens: budget.safetyMarginTokens }), 65536);
+});
+
 test("settings validation rejects values above model hard limits", () => {
 	assert.throws(() => validateRoutePatch({ targetContextTokens: 200017 }, { contextWindow: 200016, maxTokens: 65536 }), (error) => error.code === "SETTINGS_VALIDATION" && error.field === "targetContextTokens");
 	assert.throws(() => validateRoutePatch({ maxOutputTokens: 65537 }, { contextWindow: 200016, maxTokens: 65536 }), /maxOutputTokens/);
