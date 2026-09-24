@@ -1,0 +1,4 @@
+d5f6f8d493bee7ddc6f6e1a5b1a5335fcae0d149a67fc3533bf253ff83924740  dsh-md-memory-0.1.18.tgz
+6f533a79398f6608cbaa8a24a795e54b87e6ca5bdbb90bb02541758840f6bd18  dsh-md-memory-0.1.18-source.zip
+4a609117839daadb1ea786becd75b9e33144827a0b8ab1a3458d7552ce23ba66  RELEASE-README-0.1.18.md
+6c212dc598a5c6995bcbdff8ab1805e2a6edac9dcefd49f2d9effa4eefc9f6c0  DSH-MD-Memory-0.1.18-test-report.md

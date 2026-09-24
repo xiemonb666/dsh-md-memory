@@ -51,6 +51,8 @@ test("preset generator adapts to the current prefix persona and preserves host c
 		const m = generateMmlComposition({ id: "minimal-mml", base: "minimal" }, root);
 		for (const content of [s, m]) {
 			assert.match(content, /name: dsh-md-memory\/engine/);
+			assert.match(content, /maxTokens: 32768/);
+			assert.match(content, /syncMaxTokens: 32768/);
 			assert.match(content, /thresholdRatio: 0\.72/);
 			assert.match(content, /retainTokens: 1200/);
 			assert.match(content, /vacgcMode: prune/);
@@ -60,6 +62,10 @@ test("preset generator adapts to the current prefix persona and preserves host c
 		assert.match(m, /prefix: >-\n\s+You are a helpful software engineer assistant\.\n\s+\{\{md_memory\}\}/);
 		assert.doesNotMatch(m, /- id: other/);
 	});
+});
+
+test("long-session MML sync default has room for a complete operation batch", { skip: !engine }, () => {
+	assert.equal(engine.MML_DEFAULTS.syncMaxTokens, 32768);
 });
 
 test("preset generator accepts the older text persona field", { skip: !engine }, () => {

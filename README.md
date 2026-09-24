@@ -1,6 +1,8 @@
 # dsh-md-memory（Markdown Memory Ledger，MML）
 
-当前发行版：**0.1.17**。
+当前发行版：**0.1.18**。
+
+0.1.18 将 MML 预设的摘要输出与记忆同步输出上限分别调至 32768 tokens，避免长会话在 8192 / 16384 tokens 处被截断；普通对话输出预算仍由路由设置单独控制。
 
 DeepSeek Harness（DSH）插件：以 **纯 Markdown 文件** 作为项目长期记忆台账，挂接在压缩（compaction）引擎上。
 
@@ -123,7 +125,7 @@ profile = `~/.dsh/profiles/<name>/`（本机为 `desktop`）：
    ```
 
    - 正式源：`npm install dsh-md-memory@latest`（npm/git/私有 registry 均可）；
-   - 本地交付：在本仓库 `npm pack` 生成当前版本 tarball 后 `npm install .\dsh-md-memory-0.1.17.tgz`。
+   - 本地交付：在本仓库 `npm pack` 生成当前版本 tarball 后 `npm install .\dsh-md-memory-0.1.18.tgz`。
    - npm 会自动把 `"dsh-md-memory": "<源>"` 写入 profile 的 `package.json` → `dependencies`。
 
 2. **注册 bundle**：profile `package.json` 的 `dsh.profile.bundles` **末尾**追加 `"dsh-md-memory"`（bundle 顺序即补丁叠加顺序，最后写入者胜）。
